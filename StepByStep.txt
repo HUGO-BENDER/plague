@@ -1,0 +1,41 @@
+Step 001
+	[GIT]
+	create repository Git
+
+Step 002
+	[SourceTree]
+	Add new tab.  Clone
+	Source path = https://github.com/HUGO-BENDER/plague.git
+	Destination Path = C:\athlas_tempo\Cursos\ANGULAR\Plague
+	Clone
+
+Step 003
+	[cmd  or VSCode]
+    Create project
+	Go to yout directory <C:\athlas_tempo\Cursos\ANGULAR>
+    ng new <project> --style=scss --routing --skip-tests --force
+	ng new Plague --style=less --routing --skip-tests --force
+
+	{...}
+	CREATE Plague/src/environments/environment.prod.ts (51 bytes)
+	CREATE Plague/src/environments/environment.ts (658 bytes)
+	CREATE Plague/src/app/app-routing.module.ts (245 bytes)
+	CREATE Plague/src/app/app.module.ts (393 bytes)
+	CREATE Plague/src/app/app.component.html (23115 bytes)
+	CREATE Plague/src/app/app.component.ts (211 bytes)
+	CREATE Plague/src/app/app.component.less (0 bytes)
+	✔ Packages installed successfully.
+    Directory is already under version control. Skipping initialization of git.
+
+Step 004:
+	[VS Code]
+	Open folder
+	new terminal
+	ng serve -o
+
+Step 005:
+	clean proyect
+  Add this file StepByStep
+	Optional [Config and plugin VS Code]
+
+
