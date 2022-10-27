@@ -38,4 +38,31 @@ Step 005:
   Add this file StepByStep
 	Optional [Config and plugin VS Code]
 
+Step 006:
+	[SourceTree]
+	Tag fist commit in main: "0.0.1"
+	Create branch develop
+	push branch
+
+Step 007:
+	[VS Code - branch: develop]
+	Add basics | the project is totally empty
+	01- Install Material
+	02- Install flex-layout
+	03- Install firebase
+    04- Install auth-firebaseui
+    05- Install Translations
+
+	01- Install Material
+	02- Install flex-layout
+    	npm i -s @angular/flex-layout @angular/cdk
+	03- Install firebase
+    04- Install auth-firebaseui
+    05- Install Translations
+    	we use ngx-translate.
+
+
+
+
+
 
