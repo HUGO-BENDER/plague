@@ -1,0 +1,18 @@
+﻿{
+  "App_Title": "Plague",
+  "App": {
+    "Languages": {
+      "Catalan": "Catalán",
+      "English": "Inglés",
+      "French": "Francés",
+      "Galician": "Galego",
+      "Spanish": "Español"
+    }
+  },
+  "SideNav": {
+    "Actions": {
+      "Header": "Accións",
+      "SelectLanguage": "Seleccione o idioma"
+    }
+  }
+}

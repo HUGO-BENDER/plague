@@ -139,17 +139,79 @@
 	  <summary>|----------: Install auth-firebaseui </summary>
 		
     [ngx-auth-firebaseui]
-		https://ngx-auth-firebaseui.firebaseapp.com/getting-started
-    
-
-
+		read but not use https://ngx-auth-firebaseui.firebaseapp.com/getting-started only go to step 6
+    npm install --save  ngx-auth-firebaseui --legacy-peer-deps
+    npm install --save @angular-material-extensions/password-strength  --legacy-peer-deps
+    copy to assets
+    \node_modules\ngx-auth-firebaseui\assets\mdi
+    \node_modules\ngx-auth-firebaseui\assets\user
+    \node_modules\ngx-auth-firebaseui\assets\*.svgs
+    for use guards in routing see https://github.com/AnthonyNahas/ngx-auth-firebaseui
+    -- Edit app.module.ts
+    import { NgxAuthFirebaseUIModule } from 'ngx-auth-firebaseui';
+    @NgModule({
+      imports: [
+        NgxAuthFirebaseUIModule.forRoot(environment.firebaseConfig),
 
 </details>
 
 <details>
 	  <summary>|----------: Install Translations </summary>
 		
-			xxxxxxxxxxxxxxxxxxxxxxx
+		[ngx-translate]
+    https://github.com/ngx-translate/core
+    https://www.codeandweb.com/babeledit/tutorials/how-to-translate-your-angular-app-with-ngx-translate
+    npm install @ngx-translate/core @ngx-translate/http-loader      /*--  Important!!!   --legacy-peer-deps -*/
+
+    -- Edit app.module.ts
+    import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+    import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+    import {HttpClient, HttpClientModule} from '@angular/common/http';
+    
+    // required for AOT compilation
+    export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
+        return new TranslateHttpLoader(http);
+    }
+
+    imports: [
+        // ngx-translate and the loader module
+        HttpClientModule,
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: HttpLoaderFactory,
+                deps: [HttpClient]
+            }
+        })
+    ],
+
+    -- Edit app.module.ts
+    import { TranslateService } from '@ngx-translate/core';
+  currentLang: string = 'en';
+  listLanguages = [
+    { id: 'en', name: 'English' },
+    { id: 'fr', name: 'French' },
+    { id: 'ca', name: 'Catalan' },
+    { id: 'es', name: 'Spanish' },
+    { id: 'gl', name: 'Galician' }
+  ];
+
+  constructor(
+    private translate: TranslateService
+  ) {
+    this.translate.addLangs(this.listLanguages.map((l) => l.id));
+    this.translate.setDefaultLang('en');
+
+    const browserLang = this.translate.getBrowserLang();
+    this.currentLang = browserLang?.match(/en|fr|ca|es|gl/) ? browserLang : 'en';
+
+    this.translate.use(this.currentLang);
+    this.translate.get('App_Title').subscribe((res) => console.log( "translate.get('App_Title') = " + res));
+  }
+
+  -- Copy translations files to \src\assets\i18n
+  |--\src\assets\i18n\es.json
+  |--\src\assets\i18n\ all other .json
 			
 </details>	
 
