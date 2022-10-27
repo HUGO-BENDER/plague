@@ -157,3 +157,15 @@
 		xxxxxxxxxxxxxxxxxxxxxxx
 		
 </details>
+
+<details>
+  <summary> Tricks: xxxxx </summary>
+  
+	[npm ERR! peer ]
+	use --legacy-peer-deps
+  or
+  ng update
+
+
+		
+</details>
