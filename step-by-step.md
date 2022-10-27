@@ -116,7 +116,7 @@
     follow: Agrega Firebase a tu aplicación web
     1. Registrar app
     2. Agrega el SDK de Firebase
-    2.1. npm install firebase   If is necesary --legacy-peer-deps
+    2.1. npm install firebase
     2.2. We NOT use SDK Javascrit. We use angularFire
     3. npm install -g firebase-tools
     4. Firebase Hosting
@@ -124,17 +124,26 @@
     [angularfire]
     https://github.com/angular/angularfire/blob/HEAD/docs/install-and-setup.md
 		1. ng add @angular/fire
-    1. WorkAround npm install @angular/fire@7.4.1 --legacy-peer-deps 
     2. export const environment = {  firebaseConfig: { ... } }
-
-
+    3. restart for view the changes in app.module.ts
+    3.1 Check if the install is ok
+    |--  All I need id this. you can choose more 
+    |--  // --Firebase
+    |--  import { AngularFireModule } from '@angular/fire/compat';
+    |--  import { AngularFirestoreModule } from '@angular/fire/compat/firestore';  
+    |--  AngularFireModule.initializeApp(environment.firebaseConfig),
+    |--  AngularFirestoreModule,
 			
 </details>
 <details>
 	  <summary>|----------: Install auth-firebaseui </summary>
 		
-			xxxxxxxxxxxxxxxxxxxxxxx
-			
+    [ngx-auth-firebaseui]
+		https://ngx-auth-firebaseui.firebaseapp.com/getting-started
+    
+
+
+
 </details>
 
 <details>
@@ -161,11 +170,14 @@
 <details>
   <summary> Tricks: xxxxx </summary>
   
-	[npm ERR! peer ]
-	use --legacy-peer-deps
-  or
-  ng update
+  [npm ERR! peer]:
+  1. use --legacy-peer-deps
+  2. ng update
 
+	[tab Terminal whith ng serve]
+  1. control+C  and  ng serve
 
+	[tab Problem  ¿? ilogic ]
+  1. close VSCode and open
 		
 </details>

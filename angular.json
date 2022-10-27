@@ -124,6 +124,16 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "prerender": false,
+            "ssr": false,
+            "browserTarget": "Plague:build:production",
+            "firebaseProject": "ludum-nostrum",
+            "firebaseHostingSite": "plague"
+          }
         }
       }
     }
