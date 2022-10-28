@@ -82,8 +82,7 @@
     -- Edit share-material.module.ts
     import { MatToolbarModule } from '@angular/material/toolbar';
     @NgModule({
-      declarations: [],
-      imports: [
+      exports: [
         MatToolbarModule
       ]
     -- Edit app.module.ts
@@ -187,48 +186,181 @@
 
     -- Edit app.module.ts
     import { TranslateService } from '@ngx-translate/core';
-  currentLang: string = 'en';
-  listLanguages = [
-    { id: 'en', name: 'English' },
-    { id: 'fr', name: 'French' },
-    { id: 'ca', name: 'Catalan' },
-    { id: 'es', name: 'Spanish' },
-    { id: 'gl', name: 'Galician' }
-  ];
+    currentLang: string = 'en';
+    listLanguages = [
+      { id: 'en', name: 'English' },
+      { id: 'fr', name: 'French' },
+      { id: 'ca', name: 'Catalan' },
+      { id: 'es', name: 'Spanish' },
+      { id: 'gl', name: 'Galician' }
+    ];
 
-  constructor(
-    private translate: TranslateService
-  ) {
-    this.translate.addLangs(this.listLanguages.map((l) => l.id));
-    this.translate.setDefaultLang('en');
+    constructor(private translate: TranslateService) {
+      this.IniTranslation();
+    }
+    IniTranslation() {
+      this.translate.addLangs(this.listLanguages.map((l) => l.id));
+      this.translate.setDefaultLang('en');
+      const browserLang = this.translate.getBrowserLang();
+      this.currentLang = browserLang?.match(/en|fr|ca|es|gl/) ? browserLang : 'en';
+      this.translate.use(this.currentLang);
+    }
 
-    const browserLang = this.translate.getBrowserLang();
-    this.currentLang = browserLang?.match(/en|fr|ca|es|gl/) ? browserLang : 'en';
-
-    this.translate.use(this.currentLang);
-    this.translate.get('App_Title').subscribe((res) => console.log( "translate.get('App_Title') = " + res));
-  }
-
-  -- Copy translations files to \src\assets\i18n
-  |--\src\assets\i18n\es.json
-  |--\src\assets\i18n\ all other .json
+    -- Copy translations files to \src\assets\i18n
+    |--\src\assets\i18n\es.json
+    |--\src\assets\i18n\ all other .json
 			
 </details>	
 
+<details>
+  <summary>Step 008: First Screen Loading </summary>
+  
+	[VSCode- index.html]
+	Put logo in <app-root></app-root> Then is show the logo when is loading
+  ```
+    <app-root>
+      <div id="wrapper-logo">
+        <div class="contenedor-center-logo">
+          <img class="shadow10" src="../assets/logo/fondoLogo.svg" />
+        </div>
+        <div class="contenedor-center-logo anim-wait">
+          <img src="../assets/logo/letraLogo.svg" />
+        </div>
+      </div>
+    </app-root>
+
+  -- Edit Styles.less or style.css
+  /* <!-- styles to be able to display anim-logo in loading screen --> */
+  #wrapper-logo {
+    position: relative;
+    height: 100%;
+  }
+  .contenedor-center-logo {
+    position: fixed !important;
+    left: 50% !important;
+    margin-left: -100px;
+    top: 50% !important;
+    margin-top: -100px;
+    width: 200px;
+    z-index: 9000 !important;
+  }
+  .shadow10 {
+    -webkit-filter: drop-shadow(10px 10px 7px rgba(0, 0, 0, 0.5));
+    filter: drop-shadow(10px 10px 7px rgba(0, 0, 0, 0.5));
+  }
+  .anim-wait {
+    animation: anim-fadeinApp 0.7s ease infinite;
+  }
+  @keyframes anim-fadeinApp {
+    from {
+      opacity: 0;
+      transform: rotateY(180deg);
+    }
+    to {
+      opacity: 1;
+      transform: rotateY(360deg);
+    }
+  }
+
+  copy to assets
+  /assets/logo/fondoLogo.svg
+  assets/logo/letraLogo.svg
+
+	```	
+  ```
+
+</details>
+<details>
+  <summary>Step 009: app.component.html | Layout </summary>
+  
+	[VSCode]
+	  -- Edit share-material.module.ts
+    import { MatButtonModule } from '@angular/material/button';
+    import { MatIconModule } from '@angular/material/icon';
+    import { MatSidenavModule } from '@angular/material/sidenav';
+    import { MatToolbarModule } from '@angular/material/toolbar';
+    @NgModule({
+      exports: [
+        MatButtonModule,
+        MatIconModule,
+        MatSidenavModule,
+        MatToolbarModule,
+      ]
+    -- Edit app.component.html
+    https://material.angular.io/components/sidenav/examples
+    https://material.angular.io/components/toolbar/examples
+    ```
+    <mat-sidenav-container fullscreen>
+      <mat-sidenav #appsidenav mode="over" fxFlexFill>                 <!-- To component app.side-layout-->
+        <mat-toolbar color="primary">                                  <!-- To component app.toolbar -->
+          <button mat-icon-button (click)="appsidenav.toggle()">
+            <mat-icon>menu</mat-icon>
+          </button>
+          <h1>{{ "App_Title" | translate }}</h1>
+        </mat-toolbar>
+        <h1>MENU</h1>                                                    <!-- To component app.menu -->
+      </mat-sidenav>
+      <mat-sidenav-content>
+        <div fxLayout="column" fxFlexFill fxLayoutAlign="start center">  <!-- To component app.main-layout-->
+          <mat-toolbar color="primary">                                  <!-- To component app.toolbar -->
+            <button mat-icon-button (click)="appsidenav.toggle()">
+              <mat-icon>menu</mat-icon>
+            </button>
+            <h1>{{ "App_Title" | translate }}</h1>
+          </mat-toolbar>
+          <div fxFlex fxLayout="column" fxLayoutAlign="center center">    <!-- To <router-outlet></router-outlet> -->
+            <h1>MAIN</h1>
+          </div>
+        </div>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+		```
+</details>
+<details>
+  <summary>Step 010: SideBar </summary>
+  
+	  ng generate service shared/services/sidenav
+
+		
+</details>
 
 <details>
-  <summary>Step 007: xxxxx </summary>
+  <summary>Step 0: xxxxx </summary>
   
 	[xxxx]
-	
+	  xxxxxxxxxxxxxxxxxxxxxxx
 		xxxxxxxxxxxxxxxxxxxxxxx
-		
-		xxxxxxxxxxxxxxxxxxxxxxx
-		
 		xxxxxxxxxxxxxxxxxxxxxxx
 		
 </details>
 
+<details>
+  <summary>Step 0: xxxxx </summary>
+  
+	[xxxx]
+	  xxxxxxxxxxxxxxxxxxxxxxx
+		xxxxxxxxxxxxxxxxxxxxxxx
+		xxxxxxxxxxxxxxxxxxxxxxx
+		
+</details>
+<details>
+  <summary>Step 0: xxxxx </summary>
+  
+	[xxxx]
+	  xxxxxxxxxxxxxxxxxxxxxxx
+		xxxxxxxxxxxxxxxxxxxxxxx
+		xxxxxxxxxxxxxxxxxxxxxxx
+		
+</details>
+<details>
+  <summary>Step 0: xxxxx </summary>
+  
+	[xxxx]
+	  xxxxxxxxxxxxxxxxxxxxxxx
+		xxxxxxxxxxxxxxxxxxxxxxx
+		xxxxxxxxxxxxxxxxxxxxxxx
+		
+</details>
 <details>
   <summary> Tricks: xxxxx </summary>
   

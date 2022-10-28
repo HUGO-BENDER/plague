@@ -1,1 +1,24 @@
-<h1>OK. FUNCIONA</h1>
+<mat-sidenav-container fullscreen>
+  <mat-sidenav #appsidenav mode="over" fxFlexFill>                 <!-- To component app.side-layout-->
+    <mat-toolbar color="primary">                                  <!-- To component app.toolbar -->
+      <button mat-icon-button (click)="appsidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <h1>{{ "App_Title" | translate }}</h1>
+    </mat-toolbar>
+    <h1>MENU</h1>                                                    <!-- To component app.menu -->
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div fxLayout="column" fxFlexFill fxLayoutAlign="start center">  <!-- To component app.main-layout-->
+      <mat-toolbar color="primary">                                  <!-- To component app.toolbar -->
+        <button mat-icon-button (click)="appsidenav.toggle()">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <h1>{{ "App_Title" | translate }}</h1>
+      </mat-toolbar>
+      <div fxFlex fxLayout="column" fxLayoutAlign="center center">    <!-- To <router-outlet></router-outlet> -->
+        <h1>MAIN</h1>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
