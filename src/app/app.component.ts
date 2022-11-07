@@ -1,12 +1,15 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { MatSidenav } from '@angular/material/sidenav';
 import { TranslateService } from '@ngx-translate/core';
+import { SidenavService } from './UI/shared/services/sidenav.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.less'],
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
+  @ViewChild('appsidenav', { static: true }) public sidenav!: MatSidenav;
   currentLang: string = 'en';
   listLanguages = [
     { id: 'en', name: 'English' },
@@ -16,8 +19,13 @@ export class AppComponent {
     { id: 'gl', name: 'Galician' },
   ];
 
-  constructor(private translate: TranslateService) {
+  constructor(private translate: TranslateService,
+    private sidenavService: SidenavService) {
     this.IniTranslation();
+  }
+
+  ngAfterViewInit(): void {
+    this.sidenavService.setSidenav(this.sidenav);
   }
 
   IniTranslation() {

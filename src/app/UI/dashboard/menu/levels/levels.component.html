@@ -1,0 +1,16 @@
+<div fxLayout="column" fxLayoutAlign="space-evenly stretch">
+  <h3>{{"Dashboard.Menu.Levels.Choose" | translate  }}</h3>
+
+    <mat-grid-list cols="7" rowHeight="5em" >
+      <mat-grid-tile *ngFor="let tile of tilesLevel | async" [colspan]="tile.cols" >
+      <div *ngIf="tile.title"> {{ "Dashboard.Menu.Levels." + tile.title | translate}}</div>
+      <button  *ngIf="tile.iconButton" mat-fab color="primary" aria-label="xx" (click)="goToLevel(tile.action)">
+        <mat-icon>{{tile.iconButton}}</mat-icon>
+      </button>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+  <br><br><br>
+  <button mat-button matStepperNext>{{"App_Next" | translate}}</button>
+
+</div>

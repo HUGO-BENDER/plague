@@ -3,6 +3,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
   exports: [
@@ -10,6 +14,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatIconModule,
     MatSidenavModule,
     MatToolbarModule,
+    MatStepperModule,
+    MatGridListModule,
+    MatSlideToggleModule,
+    MatListModule
   ]
 })
-export class ShareMaterialModule { }
+export class MaterialModule { }

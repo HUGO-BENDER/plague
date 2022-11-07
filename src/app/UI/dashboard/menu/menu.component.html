@@ -1,0 +1,17 @@
+<div fxFlex>
+  <mat-stepper #stepper>
+    <mat-step [label]="Levels"  [completed]="false">
+      <app-levels fxFlex></app-levels>
+    </mat-step>
+    <mat-step [label]="Ranking" [completed]="false">
+      <app-ranking fxFlex></app-ranking>
+    </mat-step>
+    <mat-step [label]="UserConfig" [completed]="false">
+      <app-user-config fxFlex></app-user-config>
+    </mat-step>
+    <!-- ---------------- -->
+    <ng-template matStepperIcon="edit" let-index="index">
+      <mat-icon>{{index === 0 ? "bookmarks" : index === 1 ? "stars" : "manage_accounts"}}</mat-icon>
+    </ng-template>
+  </mat-stepper>
+</div>

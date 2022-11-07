@@ -1,0 +1,24 @@
+<div fxLayout="column" fxLayoutAlign="center center">
+  <h3>{{"Dashboard.Menu.UserConfig.Title" | translate  }}</h3>
+  <form [formGroup]="configForm" fxLayout="column" fxLayoutAlign="center center" (ngSubmit)="saveChanges()">
+    <mat-slide-toggle formControlName="config01">Option 01</mat-slide-toggle>
+    <mat-slide-toggle formControlName="config02">Option 02</mat-slide-toggle>
+    <mat-slide-toggle formControlName="config03">Option 03</mat-slide-toggle>
+    <mat-slide-toggle formControlName="config04">Option 04</mat-slide-toggle>
+    <br>
+    <button mat-rasied-button type="submit" [disabled]="configForm.pristine">Save Settings</button>
+  </form>
+  <h3>{{"Dashboard.Menu.UserConfig.SelectLanguage" | translate  }}</h3>
+  <mat-nav-list>
+    <mat-list-item *ngFor="let lang of listLanguages" [class.activated]="lang == currentLang" (click)="changeLanguage(lang)">
+      {{ 'App.Languages.'+ lang | translate }}
+      <p class="spacer">&nbsp;</p>
+      <mat-icon *ngIf="lang == currentLang">radio_button_checked</mat-icon>
+      <mat-icon *ngIf="lang != currentLang">radio_button_unchecked</mat-icon>
+    </mat-list-item>
+  </mat-nav-list>
+  <div>
+    <br><br><br>
+    <button mat-button matStepperPrevious>{{"App_Back" | translate}}</button>
+  </div>
+  </div>

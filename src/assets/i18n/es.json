@@ -1,18 +1,39 @@
 ﻿{
   "App_Title": "Plaga",
+  "App_Next": "Siguiente",
+  "App_Back": "Anterior",
   "App": {
     "Languages": {
       "Catalan": "Catalán",
       "English": "Inglés",
       "French": "Francés",
       "Galician": "Gallego",
-      "Spanish": "Español"
+      "Spanish": "Español",
+      "ca": "Catalán",
+      "en": "Inglés",
+      "fr": "Francés",
+      "gl": "Gallego",
+      "es": "Español"
     }
   },
-  "SideNav": {
-    "Actions": {
-      "SelectLanguage": "Seleccionar idioma",
-      "Header": "Acciones"
+  "Dashboard":{
+    "Menu":{
+      "Levels":{
+        "Title": "Niveles",
+        "Choose": "Elija nivel",
+        "Easy":"Facil",
+        "Hard":"Dificil",
+        "D&D":"Drag & Drop",
+        "TilesBomb":"Explosiones",
+        "Bomb&Missil":"Misiles"
+      },
+      "Ranking":{
+        "Title": "Ranking"
+      },
+      "UserConfig":{
+        "Title": "Configuración",
+        "SelectLanguage": "Seleccionar idioma"
+      }
     }
   }
 }

@@ -1,0 +1,11 @@
+<app-logo (click)="toggleAppSidenav()"></app-logo >
+  <mat-toolbar color="primary" fxLayout="row" fxLayoutAlign="space-between center" >
+    <div fxFlex fxFlexOffset="75px" fxLayout="row" fxLayoutAlign="center center"  >
+      <span fxHide.lt-sm="true">
+        {{ "App_Title" | translate }}
+      </span>
+    </div>
+    <div>
+        login
+    </div>
+  </mat-toolbar>

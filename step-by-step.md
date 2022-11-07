@@ -78,7 +78,7 @@
     ? Choose a prebuilt theme name, or "custom" for a custom theme: Purple/Green
     ? Set up global Angular Material typography styles? No   
     ? Include the Angular animations module? Include and enable animations
-    ng g m share/modules/shareMaterial
+    ng g m UI/shared/modules/material
     -- Edit share-material.module.ts
     import { MatToolbarModule } from '@angular/material/toolbar';
     @NgModule({
@@ -86,10 +86,10 @@
         MatToolbarModule
       ]
     -- Edit app.module.ts
-    import { ShareMaterialModule } from './share/modules/share-material/share-material.module';
+    import { MaterialModule } from './UI/shared/modules/material/material.module';
     @NgModule({
       imports: [
-        ShareMaterialModule
+        MaterialModule
 
 </details>
 
@@ -291,7 +291,7 @@
     https://material.angular.io/components/toolbar/examples
     ```
     <mat-sidenav-container fullscreen>
-      <mat-sidenav #appsidenav mode="over" fxFlexFill>                 <!-- To component app.side-layout-->
+      <mat-sidenav #appsidenav mode="over" fxFlexFill>
         <mat-toolbar color="primary">                                  <!-- To component app.toolbar -->
           <button mat-icon-button (click)="appsidenav.toggle()">
             <mat-icon>menu</mat-icon>
@@ -301,7 +301,7 @@
         <h1>MENU</h1>                                                    <!-- To component app.menu -->
       </mat-sidenav>
       <mat-sidenav-content>
-        <div fxLayout="column" fxFlexFill fxLayoutAlign="start center">  <!-- To component app.main-layout-->
+        <div fxLayout="column" fxFlexFill fxLayoutAlign="start center">
           <mat-toolbar color="primary">                                  <!-- To component app.toolbar -->
             <button mat-icon-button (click)="appsidenav.toggle()">
               <mat-icon>menu</mat-icon>
@@ -317,48 +317,294 @@
 		```
 </details>
 <details>
-  <summary>Step 010: SideBar </summary>
+  <summary>Step 010: SideBar Service</summary>
   
-	  ng generate service shared/services/sidenav
+	  ng generate service UI/shared/services/sidenav
+    -- Edit \src\app\UI\shared\services\sidenav.service.ts
+		import { MatSidenav } from '@angular/material/sidenav';
+    export class SidenavService {
+      private sidenav!: MatSidenav;
+      constructor() { }
+      setSidenav(sidenav: MatSidenav) {
+        this.sidenav = sidenav;
+      }
+      open() {
+        this.sidenav.open();
+      }
+      close() {
+        this.sidenav.close();
+      }
+      toggle() {
+        this.sidenav.toggle();
+      }
+      -- Edit app.component.ts  | Set SideNav service
+      import { AfterViewInit, Component, ViewChild } from '@angular/core';
+      import { MatSidenav } from '@angular/material/sidenav';
+      export class AppComponent implements AfterViewInit {
+      @ViewChild('appsidenav', { static: true }) public sidenav!: MatSidenav;
+      constructor(..., private sidenavService: SidenavService) { }
 
+      ngAfterViewInit(): void {
+        this.sidenavService.setSidenav(this.sidenav);
+      }
+
+</details>
+
+<details>
+  <summary>Step 11: Toolbar </summary>
+  
+	ng g component UI/dashboard/toolbar --skip-tests
+  -- Edit toolbar.component.html  
+  ```
+  <mat-toolbar color="primary">
+      <button mat-icon-button (click)="toggleAppSidenav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <h1>{{ "App_Title" | translate }}</h1>
+    </mat-toolbar>
+
+  -- Edit toolbar.component.ts
+  import { SidenavService } from 'src/app/UI/shared/services/sidenav.service';
+  constructor(
+    private sidenavService: SidenavService) { }
+    
+  toggleAppSidenav() {
+    this.sidenavService.toggle();
+  }
+  ```
+  -- Edit app.component.html
+  ```
+  <mat-sidenav-container fullscreen>
+    <mat-sidenav #appsidenav mode="over" fxFlexFill>
+      <app-toolbar></app-toolbar>
+      <h1>MENU</h1>                                                    <!-- To component app.menu -->
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <div fxLayout="column" fxFlexFill fxLayoutAlign="start strech">
+        <app-toolbar></app-toolbar>
+        <div fxFlex fxLayout="column" fxLayoutAlign="center center">    <!-- To <router-outlet></router-outlet> -->
+          <h1>MAIN</h1>
+        </div>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  ```
+</details>
+
+<details>
+  <summary>Step 12: component app-logo </summary>
+  
+	ng g component UI/shared/components/logo  --skip-tests
+	-- Edit \app\UI\shared\components\logo\logo.component.html
+  ```
+  <div class="contenedor-logo" aria-label="Toggle sidenav">
+    <div class="contenedor-logo" ngClass.lt-sm="contenedor-logo-sm">
+      <img class="shadow10" src="../assets/logo/fondoLogo.svg" />
+    </div>
+    <div class="contenedor-logo anim-in anim-hover" ngClass.lt-sm="contenedor-logo-sm">
+      <img src="../assets/logo/letraLogo.svg" />
+    </div>
+  </div> 
+  ```
+  -- Edit \app\UI\shared\components\logo\logo.component.less
+  ok... copy all
+  -- Edit toolbar.component.html  
+  ```
+  <app-logo (click)="toggleAppSidenav()"></app-logo >
+  <mat-toolbar color="primary" fxLayout="row" fxLayoutAlign="space-between center" >
+    <div fxFlex fxFlexOffset="75px" fxLayout="row" fxLayoutAlign="center center"  >
+      <span fxHide.lt-sm="true">
+        {{ "App_Title" | translate }}
+      </span>
+    </div>
+    <div>
+        login
+    </div>
+  </mat-toolbar>
+  ```
+
+</details>
+<details>
+  <summary>Step 13: SideLayout Menu </summary>
+
+    ng g component /UI/dashboard/menu --skip-tests
+    ng g component /UI/dashboard/menu/levels --skip-tests
+    ng g component /UI/dashboard/menu/ranking --skip-tests
+    ng g component /UI/dashboard/menu/userConfig --skip-tests
+    -- Edit src\app\UI\shared\modules\material\material.module.ts
+    import { MatStepperModule } from '@angular/material/stepper';
+    import { MatGridListModule } from '@angular/material/grid-list';  <-- use in level -->
+    import { MatSlideToggleModule } from '@angular/material/slide-toggle';  <-- use in config -->
+    import { MatListModule } from '@angular/material/list';
+    -- Edit src\app\app.module.ts
+    import { ReactiveFormsModule } from '@angular/forms';  <-- use in config -->
+    imports: [
+      ReactiveFormsModule,
+    -- Edit src\app\UI\dashboard\menu\menu.component.html 
+    ```
+    <div fxFlex>
+      <mat-stepper #stepper>
+        <mat-step [label]="Levels"  [completed]="false">
+          <app-levels fxFlex></app-levels>
+        </mat-step>
+        <mat-step [label]="Ranking" [completed]="false">
+          <app-ranking fxFlex></app-ranking>
+        </mat-step>
+        <mat-step [label]="UserConfig" [completed]="false">
+    -- Edit src\app\UI\dashboard\menu\levels\levels.component.html
+    ```
+    <div fxLayout="column" fxLayoutAlign="space-evenly stretch">
+      <h3>{{"Dashboard.Menu.Levels.Choose" | translate  }}</h3>
+        <mat-grid-list cols="7" rowHeight="5em" >
+          <mat-grid-tile *ngFor="let tile of tilesLevel | async" [colspan]="tile.cols" >
+          <div *ngIf="tile.title"> {{tile.title}}</div>
+          <button  *ngIf="tile.iconButton" mat-fab color="primary" aria-label="xx" (click)="goToLevel(tile.action)">
+            <mat-icon>{{tile.iconButton}}</mat-icon>
+          </button>
+          </mat-grid-tile>
+        </mat-grid-list>
+      <br><br><br>
+      <button mat-button matStepperNext>Next</button>
+    </div>
+    -- Edit PROTOTYPE src\app\UI\dashboard\menu\ranking\ranking.component.html
+    ```
+    <div fxLayout="column" fxLayoutAlign="center center">
+      <mat-icon aria-hidden="false" aria-label="trophy" fontIcon="military_tech"></mat-icon>
+      <h2>You are the best!!</h2>
+      <div>
+        <br><br><br>
+        <button mat-button matStepperPrevious>{{"App_Back" | translate}}</button>
+        <button mat-button matStepperNext>{{"App_Next" | translate}}</button>
+      </div>
+    </div>
+    -- Edit PROTOTYPE \src\app\UI\dashboard\menu\user-config\user-config.component.html
+    ```
+    <div fxLayout="column" fxLayoutAlign="center center">
+      <h3>{{"Dashboard.Menu.UserConfig.Title" | translate  }}</h3>
+      <form [formGroup]="configForm" fxLayout="column" fxLayoutAlign="center center" (ngSubmit)="saveChanges()">
+        <mat-slide-toggle formControlName="config01">Option 01</mat-slide-toggle>
+        <mat-slide-toggle formControlName="config02">Option 02</mat-slide-toggle>
+        <mat-slide-toggle formControlName="config03">Option 03</mat-slide-toggle>
+        <mat-slide-toggle formControlName="config04">Option 04</mat-slide-toggle>
+        <br>
+        <button mat-rasied-button type="submit" [disabled]="configForm.pristine">Save Settings</button>
+      </form>
+      <h3>{{"Dashboard.Menu.UserConfig.SelectLanguage" | translate  }}</h3>
+      <mat-nav-list>
+        <mat-list-item *ngFor="let lang of listLanguages" [class.activated]="lang == currentLang" (click)="changeLanguage(lang)">
+          {{ 'App.Languages.'+ lang | translate }}
+          <p class="spacer">&nbsp;</p>
+          <mat-icon *ngIf="lang == currentLang">radio_button_checked</mat-icon>
+          <mat-icon *ngIf="lang != currentLang">radio_button_unchecked</mat-icon>
+        </mat-list-item>
+      </mat-nav-list>
+      <div>
+        <br><br><br>
+        <button mat-button matStepperPrevious>{{"App_Back" | translate}}</button>
+      </div>
+      </div>
+    -- Edit PROTOTYPE \src\app\UI\dashboard\menu\user-config\user-config.component.ts
+    ```
+    import { FormBuilder, FormGroup } from '@angular/forms';
+    import { TranslateService } from '@ngx-translate/core';
+    export class UserConfigComponent implements OnInit {
+      configForm: FormGroup = this.fb.group({
+        config01:[''],
+        config02:[''],
+        config03:[''],
+        config04:['']
+      });
+      listLanguages: string[] = [];
+      currentLang!: string;
+      constructor(private translate: TranslateService, private fb: FormBuilder) {}
+      ngOnInit(): void {
+        this.listLanguages = this.translate.getLangs();
+        this.currentLang = this.translate.currentLang;
+      }
+      changeLanguage(lang: string) {
+        this.currentLang = lang;
+        this.translate.use(lang);
+        //-- TODO Save select lang in DB
+      }
+      saveChanges(){
+        alert("Save personal configuration");
+      }
+    }	
+</details>
+<details>
+  <summary>Step 0: MainLayout Game </summary>
+  Create lazy module 
+  ng g m game --flat --routing  
+	ng g component game --skip-tests
 		
 </details>
 
 <details>
   <summary>Step 0: xxxxx </summary>
   
-	[xxxx]
-	  xxxxxxxxxxxxxxxxxxxxxxx
-		xxxxxxxxxxxxxxxxxxxxxxx
-		xxxxxxxxxxxxxxxxxxxxxxx
-		
-</details>
+	ng g class /domain/model  --skip-tests
+	ng g class /domain/gateway  --skip-te
+	ng g service /domain/usecase  --skip-tests	sts	
 
+
+  ng g service /infraestructure/driven-adapters/firebase-provider  --skip-tests
+  ng g service /infraestructure/driven-adapters/hardcode-provider  --skip-tests
+
+
+
+</details>
 <details>
   <summary>Step 0: xxxxx </summary>
   
-	[xxxx]
-	  xxxxxxxxxxxxxxxxxxxxxxx
-		xxxxxxxxxxxxxxxxxxxxxxx
-		xxxxxxxxxxxxxxxxxxxxxxx
+	ng g component xxxx --skip-tests
 		
 </details>
 <details>
   <summary>Step 0: xxxxx </summary>
   
-	[xxxx]
-	  xxxxxxxxxxxxxxxxxxxxxxx
-		xxxxxxxxxxxxxxxxxxxxxxx
-		xxxxxxxxxxxxxxxxxxxxxxx
+	ng g component xxxx --skip-tests
 		
 </details>
 <details>
   <summary>Step 0: xxxxx </summary>
   
-	[xxxx]
-	  xxxxxxxxxxxxxxxxxxxxxxx
-		xxxxxxxxxxxxxxxxxxxxxxx
-		xxxxxxxxxxxxxxxxxxxxxxx
+	ng g component xxxx --skip-tests
+		
+</details>
+<details>
+  <summary>Step 0: xxxxx </summary>
+  
+	ng g component xxxx --skip-tests
+		
+</details>
+<details>
+  <summary>Step 0: xxxxx </summary>
+  
+	ng g component xxxx --skip-tests
+		
+</details>
+<details>
+  <summary>Step 0: xxxxx </summary>
+  
+	ng g component xxxx --skip-tests
+		
+</details>
+<details>
+  <summary>Step 0: xxxxx </summary>
+  
+	ng g component xxxx --skip-tests
+		
+</details>
+<details>
+  <summary>Step 0: xxxxx </summary>
+  
+	ng g component xxxx --skip-tests
+		
+</details>
+<details>
+  <summary>Step 0: xxxxx </summary>
+  
+	ng g component xxxx --skip-tests
 		
 </details>
 <details>
